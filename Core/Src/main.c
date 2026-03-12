@@ -1,8 +1,14 @@
-
 #include "main.h"
-
+#include "cmsis_gcc.h"
+#include "stm32f446xx.h"
+#include "uart.h"
+#include "dma.h"
+#include <stdint.h>
 
 void SystemClock_Config(void);
+
+uint32_t source_data[10] = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+uint32_t dest_data[10] = {0};
 
 /**
   * @brief  The application entry point.
@@ -10,9 +16,17 @@ void SystemClock_Config(void);
   */
 int main(void) {
   SystemClock_Config();
+  // USART2 init
+  USART2_DMA_init();
+  // USART2 TX DMA init
+  DMA1_UART_TX_init();
+  USART2_DMA_Printf("DMA TX enable %d", 1);
+  // USART RX DMA init
+  DMA1_UART_RX_init(rx_buffer_0, rx_buffer_1, RX_BUF_SIZE);
 
+  
   while (1) {
-
+    __NOP();
   }
 
 }
